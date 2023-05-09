@@ -18,22 +18,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AvaliacaoAMQPConfiguration {
     @Bean
-    public Jackson2JsonMessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+    public Jackson2JsonMessageConverter messageConverter(){
+        return  new Jackson2JsonMessageConverter();
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
-                                         Jackson2JsonMessageConverter messageConverter) {
+                                         Jackson2JsonMessageConverter messageConverter){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
-        return rabbitTemplate;
+        return  rabbitTemplate;
     }
 
     @Bean
     public Queue filaDetalhesAvaliacao() {
         return QueueBuilder
                 .nonDurable("pagamentos.detalhes-avaliacao")
+                .deadLetterExchange("pagamentos.dlx")
                 .build();
     }
 
@@ -41,7 +42,6 @@ public class AvaliacaoAMQPConfiguration {
     public Queue filaDlqDetalhesAvaliacao() {
         return QueueBuilder
                 .nonDurable("pagamentos.detalhes-avaliacao-dlq")
-                .deadLetterExchange("pagamentos.dlx")
                 .build();
     }
 

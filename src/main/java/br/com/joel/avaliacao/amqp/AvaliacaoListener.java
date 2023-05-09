@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 public class AvaliacaoListener {
     @RabbitListener(queues = "pagamentos.detalhes-avaliacao")
     public void recebeMensagem(@Payload PagamentoDto pagamento) {
-
         System.out.println(pagamento.getId());
         System.out.println(pagamento.getNumero());
 
-        if ( pagamento.getNumero().equals("0000")) {
-            throw new RuntimeException("Não consegui processar");
+        if (pagamento.getNumero().equals("0000")) {
+            throw new RuntimeException("não consegui processar");
         }
 
         String mensagem = """
